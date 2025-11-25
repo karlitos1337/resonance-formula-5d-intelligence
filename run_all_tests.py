@@ -19,11 +19,12 @@ import subprocess
 import time
 from datetime import datetime
 
+
 def run_test(test_name, script_name):
     """Führe einen Test-Script aus und handle Fehler"""
     print(f"\n{'='*80}")
     print(f"TEST {test_name}: {script_name}")
-    print(f"{'='}*80}")
+    print(f"{'='*80}")
     print(f"{'_'*80}")
     print(f"Start: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
@@ -40,11 +41,11 @@ def run_test(test_name, script_name):
         else:
             print(f"\n{'✗'*3} {test_name} FAILED (Exit Code: {result.returncode})")
             return False
-    
+            
     except subprocess.TimeoutExpired:
         print(f"\n{'✗'*3} {test_name} TIMEOUT (> 300s)")
         return False
-    
+        
     except Exception as e:
         print(f"\n{'✗'*3} {test_name} ERROR: {str(e)}")
         return False
@@ -73,37 +74,34 @@ def main():
         results[test_name] = run_test(test_name, script_name)
         time.sleep(1)  # Kurze Pause zwischen Tests
     
-    # FINAL REPORT
-    elapsed_time = time.time() - start_time
+    # Summary
+    end_time = time.time()
+    duration = end_time - start_time
     
     print("\n" + "="*80)
-    print("FINAL TEST REPORT")
+    print("TEST SUITE SUMMARY")
     print("="*80)
     
-    passed = sum(1 for v in results.values() if v)
+    passed = sum(1 for r in results.values() if r)
     total = len(results)
     
-    print(f"\nPassed: {passed}/{total} tests")
-    print(f"Failed: {total - passed}/{total} tests")
-    print(f"Total Time: {elapsed_time:.1f} seconds")
+    for test_name, result in results.items():
+        status = "✓ PASSED" if result else "✗ FAILED"
+        print(f"{status}: {test_name}")
     
-    print("\nTest Details:")
-    for test_name, passed in results.items():
-        status = '✓ PASSED' if passed else '✗ FAILED'
-        print(f"  {test_name}: {status}")
+    print(f"\n{'='*80}")
+    print(f"Total: {passed}/{total} tests passed")
+    print(f"Duration: {duration:.2f} seconds")
+    print(f"Endzeit: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"{'='*80}\n")
     
-    print("\n" + "="*80)
-    
-    if passed == total:
-        print(f"✓✓ ALL TESTS PASSED - Framework is fully validated!")
-        print("="*80 + "\n")
-        return 0
+    # Exit with error code if any test failed
+    if passed < total:
+        sys.exit(1)
     else:
-        print(f"⚠⚠ {total - passed} test(s) failed - Review above for details")
-        print("="*80 + "\n")
-        return 1
+        print("\n🎉 ALL TESTS PASSED! Framework validation successful.\n")
+        sys.exit(0)
 
 
-if __name__ == '__main__':
-    exit_code = main()
-    sys.exit(exit_code)
+if __name__ == "__main__":
+    main()
