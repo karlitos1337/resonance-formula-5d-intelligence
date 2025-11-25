@@ -1,14 +1,17 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 RUN ALL TESTS - Complete Test Suite
 ====================================
 
-Führt ALLE Tests nacheinander aus:
+Führt alle Tests nacheinander aus:
 1. Logische Konsistenz-Validierung
 2. Feedback-Loop Simulation
 3. Evolutionäre Spieltheorie
 4. Außerirdische Intelligenz Test
+5. KI-Mensch-Interaktionstest
 
-Komplettr Validierung des Resonanzformel & 5D-Intelligenz Frameworks.
+Komplette Validierung des Resonanzformel & 5D-Intelligenz Frameworks.
 """
 
 import sys
@@ -20,8 +23,9 @@ def run_test(test_name, script_name):
     """Führe einen Test-Script aus und handle Fehler"""
     print(f"\n{'='*80}")
     print(f"TEST {test_name}: {script_name}")
-    print(f"{'='*80}")
-    print(f"Start: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+    print(f"{'='}*80}")
+    print(f"{'_'*80}")
+    print(f"Start: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     try:
         result = subprocess.run(
@@ -31,31 +35,35 @@ def run_test(test_name, script_name):
         )
         
         if result.returncode == 0:
-            print(f"\n✓ {test_name} PASSED")
+            print(f"\n{'✓'*3} {test_name} PASSED")
             return True
         else:
-            print(f"\n✗ {test_name} FAILED (Exit Code: {result.returncode})")
+            print(f"\n{'✗'*3} {test_name} FAILED (Exit Code: {result.returncode})")
             return False
     
     except subprocess.TimeoutExpired:
-        print(f"\n✗ {test_name} TIMEOUT (> 300s)")
+        print(f"\n{'✗'*3} {test_name} TIMEOUT (> 300s)")
         return False
+    
     except Exception as e:
-        print(f"\n✗ {test_name} ERROR: {str(e)}")
+        print(f"\n{'✗'*3} {test_name} ERROR: {str(e)}")
         return False
+
 
 def main():
     print("\n" + "="*80)
     print("RESONANZFORMEL & 5D-INTELLIGENZ - COMPLETE TEST SUITE")
     print("="*80)
-    print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print("="*80)
+    print(f"Starzeit: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"\nRunning all tests sequentially...\n")
     
     tests = [
-        ("1. Consistency Validation", "consistency_check.py"),
-        ("2. Feedback Loop Simulation", "feedback_loop.py"),
-        ("3. Evolutionary Game Theory", "evolutionary_game_theory.py"),
-        ("4. Alien Intelligence Test", "alien_intelligence_test.py"),
+        ('1. Consistency Validation', 'consistency_check.py'),
+        ('2. Feedback Loop Simulation', 'feedback_loop.py'),
+        ('3. Evolutionary Game Theory', 'evolutionary_game_theory.py'),
+        ('4. Alien Intelligence Test', 'alien_intelligence_test.py'),
+        ('5. AI-Human Interaction Test', 'ai_human_interaction_test.py'),
     ]
     
     results = {}
@@ -70,30 +78,32 @@ def main():
     
     print("\n" + "="*80)
     print("FINAL TEST REPORT")
-    print("="*80 + "\n")
+    print("="*80)
     
     passed = sum(1 for v in results.values() if v)
     total = len(results)
     
-    print(f"Passed: {passed}/{total} tests")
+    print(f"\nPassed: {passed}/{total} tests")
     print(f"Failed: {total - passed}/{total} tests")
-    print(f"Total Time: {elapsed_time:.1f} seconds\n")
+    print(f"Total Time: {elapsed_time:.1f} seconds")
     
-    print("Test Details:")
+    print("\nTest Details:")
     for test_name, passed in results.items():
-        status = "✓ PASSED" if passed else "✗ FAILED"
+        status = '✓ PASSED' if passed else '✗ FAILED'
         print(f"  {test_name}: {status}")
     
     print("\n" + "="*80)
+    
     if passed == total:
-        print("✓ ALL TESTS PASSED - Framework is fully validated!")
+        print(f"✓✓ ALL TESTS PASSED - Framework is fully validated!")
         print("="*80 + "\n")
         return 0
     else:
-        print(f"⚠ {total - passed} test(s) failed - Review above for details")
+        print(f"⚠⚠ {total - passed} test(s) failed - Review above for details")
         print("="*80 + "\n")
         return 1
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     exit_code = main()
     sys.exit(exit_code)
